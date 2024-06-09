@@ -141,6 +141,13 @@ android {
     }
 }
 
+project.ext.react = [
+    entryFile: "index.js",
+    enableHermes: true  // If you want to use Hermes
+]
+
+enableHermes: true
+
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
