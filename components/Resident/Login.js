@@ -33,70 +33,75 @@ const Login = () => {
       await setAuthToken(token);
 
       setTimeout(async () => {
-        let user = await authApi(res.data.access_token).get(endpoints['current-user']);
+        let user = await API.get(endpoints['current-user'], {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         console.info(user.data);
 
         dispatch({
-            "type": "login",
-            "payload": user.data
-        })
+            type: "login",
+            payload: user.data
+        });
 
-        navigation.navigate("Home");
-    }, 100);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Trang chủ' }],
+        });
+        
+      }, 100);
     } catch (ex) {
       console.error('Login error', ex);
     }
   }
 
   return (
-      <View style={styles.container}>
-          <Text style={styles.h1}>ĐĂNG NHẬP</Text>
-          <TextInput 
-            value={username} 
-            onChangeText={t => setUsername(t)} 
-            placeholder="Tên đăng nhập..."
-            style={styles.input}
-          />
-          <TextInput 
-            value={password} 
-            onChangeText={t => setPassword(t)} 
-            secureTextEntry={true} 
-            placeholder="Mật khẩu..."
-            style={styles.input}
-          />
-          <Button mode="contained" onPress={login} style={styles.button}>
-              Đăng nhập
-          </Button>
-      </View>
+    <View style={styles.container}>
+      <Text style={styles.h1}>ĐĂNG NHẬP</Text>
+      <TextInput 
+        value={username} 
+        onChangeText={t => setUsername(t)} 
+        placeholder="Tên đăng nhập..."
+        style={styles.input}
+      />
+      <TextInput 
+        value={password} 
+        onChangeText={t => setPassword(t)} 
+        secureTextEntry={true} 
+        placeholder="Mật khẩu..."
+        style={styles.input}
+      />
+      <Button mode="contained" onPress={login} style={styles.button}>
+        Đăng nhập
+      </Button>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#fff',
-      padding: 20,
-    },
-    
-    h1: {
-      fontSize: 30,
-      color:'green',
-      fontWeight: 'bold',
-      margin: 30,
-    },
-
-    input: {
-      marginBottom: 30,
-      backgroundColor:'#F0FFF0',
-      width:'97%',
-    },
-
-    button: {
-      width: '50%',
-      backgroundColor:'green',
-    }
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 20,
+  },
+  h1: {
+    fontSize: 30,
+    color: 'green',
+    fontWeight: 'bold',
+    margin: 30,
+  },
+  input: {
+    marginBottom: 30,
+    backgroundColor: '#F0FFF0',
+    width: '97%',
+  },
+  button: {
+    width: '50%',
+    backgroundColor: 'green',
+  },
 });
 
 export default Login;

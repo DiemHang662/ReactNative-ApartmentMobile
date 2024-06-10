@@ -6,7 +6,7 @@ import axios from 'axios';
 import { MyDispatchContext } from '../../configs/Contexts';
 import { authApi, endpoints } from '../../configs/API';
 
-const Profile = () => {
+const Profile = ({ navigation }) => { // Added navigation prop
   const [resident, setResident] = useState(null);
   const [loading, setLoading] = useState(true);
   const dispatch = useContext(MyDispatchContext);
@@ -29,6 +29,7 @@ const Profile = () => {
 
   const handleLogout = () => {
     dispatch({ type: "logout" });
+    navigation.navigate('Login'); // Navigate to Login screen after logout
   };
 
   if (loading) {
