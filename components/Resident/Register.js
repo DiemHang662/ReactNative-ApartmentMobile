@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Register = () => {
   const [firstname, setFirstname] = useState('');
@@ -8,6 +9,8 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [secureTextEntryConfirm, setSecureTextEntryConfirm] = useState(true);
 
   const handleRegister = () => {
     // Thực hiện xử lý đăng ký ở đây, ví dụ: gửi thông tin đăng ký đến server
@@ -20,44 +23,66 @@ const Register = () => {
 
   return (
     <View style={styles.container}>
-    <Text style={styles.h1}>ĐĂNG KÝ NGƯỜI DÙNG</Text>
+      <Text style={styles.h1}>ĐĂNG KÝ NGƯỜI DÙNG</Text>
       <TextInput
-        label="Firstname"
+        label="Họ người dùng..."
         value={firstname}
         onChangeText={text => setFirstname(text)}
         style={styles.input}
       />
-
-    <TextInput
-        label="Lastname"
+      <TextInput
+        label="Tên người dùng..."
         value={lastname}
         onChangeText={text => setLastname(text)}
         style={styles.input}
       />
-
       <TextInput
-        label="Email"
+        label="Email..."
         value={email}
         onChangeText={text => setEmail(text)}
-        secureTextEntry
+        keyboardType="email-address"
         style={styles.input}
       />
-
+      <View style={styles.passwordContainer}>
         <TextInput
-            label="Password"
-            value={password}
-            onChangeText={text => setPassword(text)}
-            secureTextEntry
-            style={styles.input}
+          value={password}
+          onChangeText={text => setPassword(text)}
+          secureTextEntry={secureTextEntry}
+          placeholder="Mật khẩu..."
+          style={[styles.input, styles.passwordInput]}
         />
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={() => setSecureTextEntry(!secureTextEntry)}
+        >
+          <Icon
+            name={secureTextEntry ? 'visibility-off' : 'visibility'}
+            size={24}
+            color="gray"
+          />
+        </TouchableOpacity>
+      </View>
 
-      <TextInput
-        label="Confirm Password"
-        value={confirmPassword}
-        onChangeText={text => setConfirmPassword(text)}
-        secureTextEntry
-        style={styles.input}
-      />
+      <View style={styles.passwordContainer}>
+        <TextInput
+          value={confirmPassword}
+          onChangeText={text => setConfirmPassword(text)}
+          secureTextEntry={secureTextEntryConfirm}
+          placeholder="Nhập lại mật khẩu..."
+          style={[styles.input, styles.passwordInput]}
+        />
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={() => setSecureTextEntryConfirm(!secureTextEntryConfirm)}
+        >
+          <Icon
+            name={secureTextEntryConfirm ? 'visibility-off' : 'visibility'}
+            size={24}
+            color="gray"
+          />
+        </TouchableOpacity>
+      </View>
+
       <Button mode="contained" onPress={handleRegister} style={styles.button}>
         Đăng ký
       </Button>
@@ -71,26 +96,44 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 10,
-    backgroundColor:'white',
+    backgroundColor: 'white',
   },
 
   h1: {
     fontSize: 25,
-    color:'green',
+    color: 'green',
     fontWeight: 'bold',
-    margin: 30,
+    marginTop: 10,
+    marginBottom: 30,
   },
- 
+
   input: {
     margin: 20,
     width: '100%',
-    backgroundColor:'#F0FFF0',
-  }, 
+    backgroundColor: '#F0FFF0',
+  },
+
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    width: '100%',
+    backgroundColor: '#F0FFF0',
+  },
+
+  passwordInput: {
+    flex: 1,
+    height:30,
+  },
+
+  iconContainer: {
+    padding: 10,
+  },
 
   button: {
-    marginTop: 10,
+    marginTop: 20,
     width: '50%',
-    backgroundColor:'green',
+    backgroundColor: 'green',
   },
 });
 

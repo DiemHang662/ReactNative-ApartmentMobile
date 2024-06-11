@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState, useContext } from "react";
+import React, { useReducer } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -11,10 +11,12 @@ import Register from './components/Resident/Register';
 import Feedback from './components/Feedback/Feedback';
 import Survey from './components/Survey/Survey';
 import Login from './components/Resident/Login'; 
+//import Register from './components/Resident/Register'; 
 import BillList from './components/Bill/BillList'; 
 import BillDetail from './components/Bill/BillDetail'; 
 import Famember from './components/Famember/Famember'; 
 import { MyDispatchContext, MyUserContext } from './configs/Contexts';
+import MyUserReducer from './configs/MyUserReducer';
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -69,22 +71,11 @@ function DrawerNavigator() {
 }
 
 function App() {
-  const [resident, setResident] = useState(null);
-  const dispatch = useContext(MyDispatchContext);
-
-  const handleResidentLogin = (residentData) => {
-    setResident(residentData);
-  };
-
-  const handleLogout = () => {
-    // Clear the user's authentication state
-    setResident(null);
-    dispatch({ type: "logout" });
-  };
+  const [resident, dispatch] = useReducer(MyUserReducer, null);
 
   return (
     <MyUserContext.Provider value={resident}>
-      <MyDispatchContext.Provider value={handleResidentLogin}>
+      <MyDispatchContext.Provider value={dispatch}>
         <NavigationContainer>
           <Tab.Navigator screenOptions={{
               tabBarActiveTintColor: 'green', 

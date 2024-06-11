@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, StyleSheet, ActivityIndicator, Image } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, Image, ScrollView } from 'react-native';
 import { Button } from "react-native-paper";
 import { Text, Card } from 'react-native-elements';
 import axios from 'axios';
 import { MyDispatchContext } from '../../configs/Contexts';
 import { authApi, endpoints } from '../../configs/API';
 
-const Profile = ({ navigation }) => { // Added navigation prop
+const Profile = ({ navigation }) => {
   const [resident, setResident] = useState(null);
   const [loading, setLoading] = useState(true);
   const dispatch = useContext(MyDispatchContext);
@@ -14,8 +14,8 @@ const Profile = ({ navigation }) => { // Added navigation prop
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const api = await authApi(); // Initialize axios instance with token
-        const response = await api.get(endpoints.residents); // Use authenticated api instance
+        const api = await authApi();
+        const response = await api.get(endpoints.residents);
         setResident(response.data);
       } catch (error) {
         console.error('Error fetching profile:', error);
@@ -29,7 +29,6 @@ const Profile = ({ navigation }) => { // Added navigation prop
 
   const handleLogout = () => {
     dispatch({ type: "logout" });
-    navigation.navigate('Login'); // Navigate to Login screen after logout
   };
 
   if (loading) {
@@ -37,38 +36,46 @@ const Profile = ({ navigation }) => { // Added navigation prop
   }
 
   return (
-    <View style={styles.container}>
-      {resident ? (
-        <View>
-          <View style={{ alignItems: 'center'}}>
-            <Text style={styles.h1}>Chào, {resident[0].first_name} {resident[0].last_name}</Text>
-            {resident[0].avatar_url && (
-              <Image
-                source={{ uri: resident[0].avatar_url }}
-                style={{ width: 150, height: 150, borderRadius: 150}}
-              />
-            )}
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
+        {resident ? (
+          <View>
+            <View style={{ alignItems: 'center'}}>
+              <Text style={styles.h1}>Chào, {resident[0].first_name} {resident[0].last_name}</Text>
+              {resident[0].avatar_url && (
+                <Image
+                  source={{ uri: resident[0].avatar_url }}
+                  style={{ width: 150, height: 150, borderRadius: 150}}
+                />
+              )}
+            </View>
+            
+            <Card >
+              <Card.Title style={styles.h2}>HỒ SƠ CÁ NHÂN </Card.Title>
+              <Card.Divider />
+              
+              <Text style={styles.content}>Họ và tên: {resident[0].first_name} {resident[0].last_name}</Text>
+              <Text style={styles.content}>Tên tài khoản: {resident[0].username}</Text>
+              <Text style={styles.content}>Email: {resident[0].email}</Text>
+
+            </Card>   
+
+            <Button style={styles.btlogout} labelStyle={{ color: 'white' }} icon="logout" onPress={handleLogout}>ĐĂNG XUẤT</Button>        
           </View>
-          
-          <Card >
-            <Card.Title style={styles.h2}>HỒ SƠ CÁ NHÂN </Card.Title>
-            <Card.Divider />
-            <Text style={styles.content}>Họ và tên: {resident[0].first_name} {resident[0].last_name}</Text>
-            <Text style={styles.content}>Tên tài khoản: {resident[0].username}</Text>
-            <Text style={styles.content}>Email: {resident[0].email}</Text>
-          </Card>   
 
-          <Button style={styles.btlogout} labelStyle={{ color: 'white' }} icon="logout" onPress={handleLogout}>ĐĂNG XUẤT</Button>        
-        </View>
-
-      ) : (
-        <Text style={styles.error}>Không thể tải thông tin cư dân.</Text>
-      )}
-    </View>
+        ) : (
+          <Text style={styles.error}>Không thể tải thông tin cư dân.</Text>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
+
   container: {
     flex: 1,
     backgroundColor: 'white',
