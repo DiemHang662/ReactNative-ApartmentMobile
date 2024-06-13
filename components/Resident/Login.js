@@ -18,8 +18,8 @@ const Login = () => {
       const formData = new FormData();
       formData.append('username', username);
       formData.append('password', password);
-      formData.append('client_id', "JmpXlpBUFBPj6KMJx12fEouPDz73qricJnI4Vj9l");
-      formData.append('client_secret', "k0kCAJ1hp9SFA3WLl2y0FzSSRcmuFo6gxSS3udqfxrSOE9FSGAbltvfvB87o9hkjggSAGYv9letZwxQhUfsppt9cfyVRwH8fdLFgehQjpjit1wI2WzotC69NNo9FRlys");
+      formData.append('client_id', "Oyl13CtUf1P9FE39omeIFcArmR95erKvk151Jhpl");
+      formData.append('client_secret', "vxPObcUCtPZ25ZxHzujWQew34clKvPioOxLJuBYY8VYKBqFreHYjOxV1lamby4SIMwYJzjIWXWeKBTd9CCLKeg8ubbBfY4p99iqHkQPHnOpbWkuhwyer9hYFjDH64x9n");
       formData.append('grant_type', "password");
 
       const config = {

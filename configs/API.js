@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const BASE_URL = 'http://diemhang.pythonanywhere.com/';
+const BASE_URL = 'http://192.168.1.6:8000/';
 
 export const endpoints = {
   residents: '/api/residents/',
+  'create-new-account': '/api/residents/create-new-account/',
   'current-user': '/api/residents/current-user/',
   bills: '/api/bills/',
   login: '/o/token/',

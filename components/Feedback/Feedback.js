@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert, ScrollView } from 'react-native';
 import { Input, Button, Text } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { authApi, endpoints } from '../../configs/API';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; 
 
 const Feedback = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [token, setToken] = useState('');
+  const [resident] = useState('1'); 
 
   useEffect(() => {
     fetchToken();
@@ -25,54 +28,74 @@ const Feedback = () => {
     }
   };
 
-  const addFeedback = () => {
-    fetch("https://diemhang.pythonanywhere.com/api/feedback/", {
-      method: "POST",
-      body: JSON.stringify({
-        "title": title,
-        "content": content,
-        "resident": 3
-      }),
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => {
-      if (!res.ok) {
+  const addFeedback = async () => {
+    try {
+      const response = await fetch("http://192.168.1.6:8000/api/feedback/", {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "title": title,
+          "content": content,
+          "resident": resident,
+        }),
+      });
+
+      if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      return res.json();
-    })
-    .then(data => {
+
+      const data = await response.json();
       console.info(data);
-    })
-    .catch(err => {
-      console.error('There was a problem with your fetch operation:', err);
-    });
+      setTitle('');
+      setContent('');
+    } catch (error) {
+      console.error('There was a problem with your fetch operation:', error);
+    }
   };
 
   return (
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
     <View style={styles.container}>
       <Text style={styles.h1}>PHẢN ÁNH TÌNH TRẠNG CHUNG CƯ</Text>
+
       <Input
-        label="Tên phản ánh" placeholder="Nhập tiêu đề phản ánh..."  value={title}
-        onChangeText={text => setTitle(text)} containerStyle={styles.inputContainer}
+        label="Chủ đề phản ánh" labelStyle={{ color: 'green'}}
+        placeholder="Nhập tiêu đề phản ánh..."
+        value={title}
+        onChangeText={(text) => setTitle(text)}
+        multiline numberOfLines={3}
+        containerStyle={styles.inputContainer}
       />
 
       <Input
-        label="Nội dung phản ánh của bạn" placeholder="Nhập nội dung phản ánh..."
-        value={content} onChangeText={text => setContent(text)}
-        multiline numberOfLines={6} containerStyle={styles.inputContainer}
+        label="Nội dung phản ánh: " labelStyle={{ color: 'green'}}
+        placeholder="Nhập nội dung phản ánh..."
+        value={content}
+        onChangeText={(text) => setContent(text)}
+        multiline numberOfLines={6}
+        containerStyle={styles.inputContainer}
       />
 
       <Button
-        title="Gửi phản ánh" onPress={addFeedback} buttonStyle={styles.button} />
+        title="  Gửi"
+        onPress={addFeedback}
+        icon={<Icon name="send" size={20}  color={'white'}/>} // Icon gửi từ MaterialCommunityIcons
+        buttonStyle={styles.button}
+        disabled={!title || !content}
+      />
+
     </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
 
   container: {
     flex: 1,
@@ -80,25 +103,27 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
 
-  title: {
-    marginBottom: 20,
+  h1: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: 'green',
+    textAlign: 'center',
+    marginBottom: 30,
+    marginTop:15,
   },
 
   inputContainer: {
     marginBottom: 20,
+    padding:10,
+    borderWidth:0,
   },
 
   button: {
-    backgroundColor: '#009900',
-  },
-
-  h1: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'green',
-    textAlign: 'center',
-    marginBottom: 20,
-    padding:5,
+    backgroundColor: 'green',
+    width:'30%',
+    height:40,
+    borderRadius:50,
+    marginLeft:120,
   },
 });
 

@@ -27,13 +27,13 @@ const Home = () => {
             />
 
         <View>
-            <View style={styles.h1}>
-                <Text style={styles.text}>GIỚI THIỆU</Text>
+
+            <View>
+                <Text style={styles.h1}>GIỚI THIỆU</Text>
             </View>
 
             <View style={styles.intro}>
-                <Text style={styles.text1}>
-                    Tất cả các phòng tại đây đều sở hữu phong cách thiết kế hiện đại với đầy đủ các trang thiết bị tiện nghi, hiện đại, đem lại sự thoải mái tối đa cho kỳ nghỉ của du khách.
+                <Text style={styles.textIntro}> GOLDEN SEA xin gửi đến quý khách hàng lời chúc tốt đẹp nhất & lời cảm ơn quý khách đã quan tâm đến chung cư chúng tôi
                 </Text>
                 <Image
                     source={{ uri: 'https://xaydungnhatrongoi.vn/wp-content/uploads/2023/09/1-9.jpg' }}
@@ -41,30 +41,30 @@ const Home = () => {
                 />
             </View>
 
-            <View style={styles.h1}>
-                <Text style={styles.text}>VỊ TRÍ</Text>
+            <View>
+                <Text style={styles.h2}>VỊ TRÍ</Text>
             </View>
 
             <View style={styles.intro}>
                 <Image
-                    source={{ uri: 'https://xaydungnhatrongoi.vn/wp-content/uploads/2023/09/1-9.jpg' }}
+                    source={{ uri: 'https://thuanhunggroup.com/wp-content/uploads/2022/08/Saigon-Peninsula-Qua%CC%A3%CC%82n-7-Viva-Land.jpeg' }}
                     style={styles.imageIntro}
                 />
-                <Text style={styles.text1}>
-                    Tất cả các phòng tại đây đều sở hữu phong cách thiết kế hiện đại với đầy đủ các trang thiết bị tiện nghi, hiện đại, đem lại sự thoải mái tối đa cho kỳ nghỉ của du khách.
-                </Text>
+                
+                <Text style={styles.textIntro}>  Đường Đào Trí, Phú Thuận, Q7, TP.HCM. Nằm kế cạnh khu đô thị Peninsula được đầu tư 6 tỷ USD</Text>
+            
             </View>
            
         </View>
 
-        <View style={styles.h1}>
+        <View style={styles.h3}>
             <Text style={styles.text}>HÌNH ẢNH THỰC TẾ</Text>
         </View>
 
         <View style={styles.content}>             
                 
             <View style={styles.list1}>
-                <Text style={styles.text2}>Phòng khách</Text>
+                <Text style={styles.text1}>Phòng khách</Text>
                 <View style={styles.imageContainer}>
                 <Image
                     source={{ uri: 'https://decoxdesign.com/upload/images/thiet-ke-pk-chung-cu-nho-07-decox-design.jpg' }}
@@ -74,7 +74,7 @@ const Home = () => {
             </View>
 
             <View style={styles.list1}>
-                <Text style={styles.text2}>Phòng bếp</Text>
+                <Text style={styles.text1}>Phòng bếp</Text>
                 <View style={styles.imageContainer}>
                 <Image
                     source={{ uri: 'https://katahome.com/wp-content/uploads/2021/11/phong-bep.jpg' }}
@@ -84,7 +84,7 @@ const Home = () => {
                 </View>
 
             <View style={styles.list1}>
-                <Text style={styles.text2}>Phòng ngủ</Text>
+                <Text style={styles.text1}>Phòng ngủ</Text>
                 <View style={styles.imageContainer}>
                  <Image
                     source={{ uri: 'https://noithattugia.com/wp-content/uploads/Phong-ngu-the-hien-ca-tinh-rieng-va-theo-so-thich-cua-chu-nhan-can-phong-noi-that-tu-gia.jpg' }}
@@ -94,7 +94,7 @@ const Home = () => {
                  </View>
 
             <View style={styles.list1}>
-                <Text style={styles.text2}>Phòng tập gym</Text>
+                <Text style={styles.text1}>Phòng tập gym</Text>
                 <View style={styles.imageContainer}>
                 <Image
                     source={{ uri: 'https://phumyhung.vn/wp-content/uploads/2020/11/Hung-Phuc-Premier-36-Copy.jpg' }}
@@ -104,7 +104,7 @@ const Home = () => {
         </View>
 
         <View style={styles.list1}>
-            <Text style={styles.text2}>Cửa hàng tiện lợi</Text>
+            <Text style={styles.text1}>Cửa hàng tiện lợi</Text>
             <View style={styles.imageContainer}>
             <Image
                 source={{ uri: 'https://songmoi.vn/sites/default/files/cua_hang_tien_loi.jpg?1433382853' }}
@@ -115,7 +115,7 @@ const Home = () => {
 
 
         <View style={styles.list1}>
-            <Text style={styles.text2}>Sân vui chơi</Text>
+            <Text style={styles.text1}>Sân vui chơi</Text>
             <View style={styles.imageContainer}>
             <Image
                 source={{ uri: 'https://mangtruot.com/wp-content/uploads/2020/12/tu-van-lap-dat-khu-vui-choi-ngoai-troi-cho-tre-em-tai-khu-chung-cu-5.jpg' }}
@@ -139,12 +139,12 @@ const styles = StyleSheet.create({
     },
 
     imageList: {
-       marginBottom:30,
+       marginBottom:25,
     },
     
     imageSlide: {
         width: 410, 
-        height: 210, 
+        height: 220, 
         marginBottom: 20,
     },
 
@@ -168,6 +168,33 @@ const styles = StyleSheet.create({
     },
 
     h1:{
+        width:'45%',
+        borderTopWidth: 1, 
+        borderTopColor: 'green', 
+        textAlign:'center',
+        marginRight:200,
+        fontSize:25,
+        fontWeight:'bold',
+        color:'green',
+        padding:15,
+
+    },
+    
+    h2:{
+        width:'40%',
+        borderTopWidth: 1, 
+        borderTopColor: 'green', 
+        textAlign:'center',
+        marginLeft:220,
+        fontSize:25,
+        fontWeight:'bold',
+        color:'green',
+        padding:15,
+
+    },
+    
+
+    h3:{
         width:'70%',
         borderTopWidth: 1, 
         borderTopColor: 'green', 
@@ -193,18 +220,20 @@ const styles = StyleSheet.create({
         margin:25,
     },
 
-    text1:{
-        width:'48%',
+    textIntro:{
+        width:'45%',
         padding:5,
-        textAlign:'left',
+        textAlign:'justify',
+        fontSize:20,
+        fontStyle:'italic',
     },
 
    imageIntro:{
-        width:'48%',
-        height:210,
+        width:'50%',
+        height:220,
     },
 
-    text2: {
+    text1: {
         position:'relative',
         backgroundColor: 'white',
         color: 'darkgreen',

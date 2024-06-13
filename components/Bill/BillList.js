@@ -15,7 +15,7 @@ const BillList = () => {
   useEffect(() => {
     const fetchBills = async () => {
       try {
-        const api = await authApi(); // Initialize the axios instance with the token
+        const api = await authApi(); 
         const params = filter === 'all' ? {} : { payment_status: filter.toUpperCase() };
         const response = await api.get(endpoints.bills, { params });
         setBills(response.data);

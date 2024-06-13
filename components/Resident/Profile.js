@@ -16,6 +16,7 @@ const Profile = ({ navigation }) => {
       try {
         const api = await authApi();
         const response = await api.get(endpoints.residents);
+        console.log('API response:', response.data); // Log the response data for debugging
         setResident(response.data);
       } catch (error) {
         console.error('Error fetching profile:', error);
@@ -35,37 +36,34 @@ const Profile = ({ navigation }) => {
     return <ActivityIndicator size="large" color="#009900" />;
   }
 
+  if (!resident || !resident[0]) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.error}>Không thể tải thông tin cư dân.</Text>
+      </View>
+    );
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        {resident ? (
-          <View>
-            <View style={{ alignItems: 'center'}}>
-              <Text style={styles.h1}>Chào, {resident[0].first_name} {resident[0].last_name}</Text>
-              {resident[0].avatar_url && (
-                <Image
-                  source={{ uri: resident[0].avatar_url }}
-                  style={{ width: 150, height: 150, borderRadius: 150}}
-                />
-              )}
-            </View>
-            
-            <Card >
-              <Card.Title style={styles.h2}>HỒ SƠ CÁ NHÂN </Card.Title>
-              <Card.Divider />
-              
-              <Text style={styles.content}>Họ và tên: {resident[0].first_name} {resident[0].last_name}</Text>
-              <Text style={styles.content}>Tên tài khoản: {resident[0].username}</Text>
-              <Text style={styles.content}>Email: {resident[0].email}</Text>
-
-            </Card>   
-
-            <Button style={styles.btlogout} labelStyle={{ color: 'white' }} icon="logout" onPress={handleLogout}>ĐĂNG XUẤT</Button>        
-          </View>
-
-        ) : (
-          <Text style={styles.error}>Không thể tải thông tin cư dân.</Text>
-        )}
+        <View style={{ alignItems: 'center' }}>
+          <Text style={styles.h1}>Chào, {resident[0].first_name} {resident[0].last_name}</Text>
+          {resident[0].avatar_url && (
+            <Image
+              source={{ uri: resident[0].avatar_url }}
+              style={{ width: 150, height: 150, borderRadius: 150 }}
+            />
+          )}
+        </View>
+        <Card>
+          <Card.Title style={styles.h2}>HỒ SƠ CÁ NHÂN </Card.Title>
+          <Card.Divider />
+          <Text style={styles.content}>Họ và tên: {resident[0].first_name} {resident[0].last_name}</Text>
+          <Text style={styles.content}>Tên tài khoản: {resident[0].username}</Text>
+          <Text style={styles.content}>Email: {resident[0].email}</Text>
+        </Card>
+        <Button style={styles.btlogout} labelStyle={{ color: 'white' }} icon="logout" onPress={handleLogout}>ĐĂNG XUẤT</Button>
       </View>
     </ScrollView>
   );
@@ -75,32 +73,28 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
   },
-
   container: {
     flex: 1,
     backgroundColor: 'white',
     padding: 10,
     height: '100%',
   },
-
   h1: {
     textAlign: 'center',
     fontSize: 25,
     fontWeight: 'bold',
     color: "green",
     marginBottom: 20,
-    textTransform:'uppercase',
+    textTransform: 'uppercase',
   },
-
   h2: {
     fontSize: 20,
     color: 'green',
-    fontWeight:'bold',
+    fontWeight: 'bold',
     textAlign: 'center',
-    padding:7,
-    margin:20,
+    padding: 7,
+    margin: 20,
   },
-
   content: {
     fontSize: 18,
     margin: 10,
@@ -110,12 +104,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'red',
   },
-
-  btlogout:{
-    backgroundColor:'#CC0000',
-    width:'50%',
+  btlogout: {
+    backgroundColor: '#CC0000',
+    width: '50%',
     marginTop: 30,
-    marginLeft:80,
+    marginLeft: 80,
   },
 });
 
