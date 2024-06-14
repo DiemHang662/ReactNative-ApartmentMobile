@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, ScrollView, ImageBackground, TouchableOpacity, Image, Alert } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, TextInput, Checkbox } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import API from '../../configs/API'; // Adjust this path based on your project structure
@@ -13,6 +13,8 @@ const Register = () => {
   const [avatar, setAvatar] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [is_staff, setIsStaff] = useState(false);
+  const [is_superuser, setIsSuperuser] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [secureTextEntryConfirm, setSecureTextEntryConfirm] = useState(true);
 
@@ -48,6 +50,8 @@ const Register = () => {
       formData.append('username', username);
       formData.append('email', email);
       formData.append('password', password);
+      formData.append('is_staff', is_staff);
+      formData.append('is_superuser', is_superuser);
       if (avatar) {
         formData.append('avatar', {
           uri: avatar.uri,
@@ -152,6 +156,29 @@ const Register = () => {
               />
             </TouchableOpacity>
           </View>
+
+        <View style={styles.isAdminOrUser}>
+
+          <View style={styles.checkboxContainer}>
+            <Text style={styles.checkboxLabel}>Cư dân
+              <Checkbox color="green"
+                status={is_staff ? 'checked' : 'unchecked'}
+                onPress={() => setIsStaff(!is_staff)} 
+              />
+            </Text>
+          </View>
+
+          <View style={styles.checkboxContainer}>
+            
+            <Text style={styles.checkboxLabel}>Quản trị viên
+              <Checkbox color="green"
+                status={is_superuser ? 'checked' : 'unchecked'}
+                onPress={() => setIsSuperuser(!is_superuser)}
+              />
+            </Text>
+          </View>
+
+        </View>
           <Button mode="contained" onPress={handleRegister} style={styles.button}>
             Đăng ký
           </Button>
@@ -166,6 +193,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
   },
+
   background: {
     flex: 1,
     width: '100%',
@@ -173,6 +201,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   container: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -185,6 +214,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     opacity: 0.95,
   },
+
   h1: {
     fontSize: 25,
     color: 'green',
@@ -192,6 +222,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
   },
+
   input: {
     margin: 10,
     width: '100%',
@@ -199,16 +230,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+
   textAvatar: {
     fontSize: 16,
     margin: 10,
     padding: 10,
   },
+
   avatarImage: {
     width: 100,
     height: 100,
     borderRadius: 50,
   },
+
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -216,17 +250,42 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#F0FFF0',
   },
+
   passwordInput: {
     flex: 1,
   },
+
   iconContainer: {
     padding: 10,
   },
+
   button: {
-    margin: 20,
+    marginTop: 40,
+    marginBottom:20,
     width: '50%',
     backgroundColor: 'green',
   },
+
+  isAdminOrUser:{
+    flex: 1,
+    flexWrap:'wrap',
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:'#F0FFF0',
+    width:'100%',
+  },
+
+  checkboxContainer:{
+    padding:10,
+     marginRight:10,
+     marginLeft:10,
+  },
+
+  checkboxLabel:{
+    fontSize:16,
+  },
+
 });
 
 export default Register;

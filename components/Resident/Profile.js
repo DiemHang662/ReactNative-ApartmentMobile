@@ -36,22 +36,24 @@ const Profile = ({ navigation }) => {
     return <ActivityIndicator size="large" color="#009900" />;
   }
 
-  if (!resident || !resident[0]) {
+  if (!resident || !Array.isArray(resident) || resident.length === 0) {
     return (
       <View style={styles.container}>
         <Text style={styles.error}>Không thể tải thông tin cư dân.</Text>
       </View>
     );
   }
+  
+  const user = resident[0];
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         <View style={{ alignItems: 'center' }}>
-          <Text style={styles.h1}>Chào, {resident[0].first_name} {resident[0].last_name}</Text>
-          {resident[0].avatar_url && (
+          <Text style={styles.h1}>Chào, {user.first_name} {user.last_name}</Text>
+          {user.avatar_url && (
             <Image
-              source={{ uri: resident[0].avatar_url }}
+              source={{ uri: user.avatar_url }}
               style={{ width: 150, height: 150, borderRadius: 150 }}
             />
           )}
@@ -59,9 +61,9 @@ const Profile = ({ navigation }) => {
         <Card>
           <Card.Title style={styles.h2}>HỒ SƠ CÁ NHÂN </Card.Title>
           <Card.Divider />
-          <Text style={styles.content}>Họ và tên: {resident[0].first_name} {resident[0].last_name}</Text>
-          <Text style={styles.content}>Tên tài khoản: {resident[0].username}</Text>
-          <Text style={styles.content}>Email: {resident[0].email}</Text>
+          <Text style={styles.content}>Họ và tên: {user.first_name} {user.last_name}</Text>
+          <Text style={styles.content}>Tên tài khoản: {user.username}</Text>
+          <Text style={styles.content}>Email: {user.email}</Text>
         </Card>
         <Button style={styles.btlogout} labelStyle={{ color: 'white' }} icon="logout" onPress={handleLogout}>ĐĂNG XUẤT</Button>
       </View>
