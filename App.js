@@ -8,12 +8,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Home from './components/Home/Home';
 import Profile from './components/Resident/Profile';
 import Register from './components/Resident/Register';
-import Feedback from './components/Feedback/Feedback';
-import Survey from './components/Survey/Survey';
 import Login from './components/Resident/Login'; 
-//import Register from './components/Resident/Register'; 
 import BillList from './components/Bill/BillList'; 
 import BillDetail from './components/Bill/BillDetail'; 
+import Payment from './components/Payment/Payment';
+import MomoPayment from './components/Payment/MomoPayment';
+import Item from './components/Item/Item';
+import Feedback from './components/Feedback/Feedback';
+import Survey from './components/Survey/Survey';
 import Famember from './components/Famember/Famember'; 
 import { MyDispatchContext, MyUserContext } from './configs/Contexts';
 import MyUserReducer from './configs/MyUserReducer';
@@ -32,11 +34,29 @@ function BillStack() {
           color:'green',
         },
       }} >
+
       <Stack.Screen name="BillList" component={BillList} options={{ title: 'DANH SÁCH HÓA ĐƠN' }} />
       <Stack.Screen name="BillDetail"component={BillDetail} options={{ title: 'CHI TIẾT HÓA ĐƠN' }} />
     </Stack.Navigator>
   );
 }
+
+function PaymentStack() {
+  return (
+    <Stack.Navigator screenOptions={{
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontSize: 18, 
+          fontWeight: 'bold',
+          color:'#D82D8B',
+        },
+      }} >
+      <Stack.Screen name="Payment" component={Payment} options={{ title: 'DANH SÁCH HÓA ĐƠN CHƯA THANH TOÁN' }} />
+      <Stack.Screen name="MomoPayment"component={MomoPayment} options={{ title: 'THANH TOÁN BẰNG VÍ MOMO' }} />
+    </Stack.Navigator>
+  );
+}
+
 
 function DrawerNavigator() {
   return (
@@ -46,26 +66,43 @@ function DrawerNavigator() {
           drawerActiveTintColor: 'green', 
         }}
        />
+
       <Drawer.Screen name='Hóa đơn' component={BillStack} 
         options={{
           drawerActiveTintColor: 'green', 
         }}
        />
+
+    <Drawer.Screen name='Thanh toán' component={PaymentStack} 
+        options={{
+          drawerActiveTintColor: 'green', 
+        }}
+     />
+
+      <Drawer.Screen name='Tủ đồ điện' component={Item} 
+        options={{
+          drawerActiveTintColor: 'green', 
+        }}
+     />
+
       <Drawer.Screen name='Khảo sát' component={Survey} 
         options={{
           drawerActiveTintColor: 'green', 
         }}
       />
+
       <Drawer.Screen name='Phản ánh' component={Feedback} 
         options={{
           drawerActiveTintColor: 'green', 
         }}
      />
+
      <Drawer.Screen name='Đăng ký xe' component={Famember} 
         options={{
           drawerActiveTintColor: 'green', 
         }}
      />
+
     </Drawer.Navigator>
   );
 }

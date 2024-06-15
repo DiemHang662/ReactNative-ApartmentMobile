@@ -11,13 +11,41 @@ const BillDetail = ({ route }) => {
       <Card>
         <Card.Title style={styles.h2}>THÔNG TIN HÓA ĐƠN</Card.Title>
         <Card.Divider />
-        <Text style={styles.content}>Mã hóa đơn: {bill.id}</Text>
-        <Text style={styles.content}>Mã cư dân: {bill.resident}</Text>
-        <Text style={styles.content}>Loại hóa đơn: {bill.bill_type}</Text>
-        <Text style={styles.content}>Ngày phát hành: {bill.issue_date}</Text>
-        <Text style={styles.content}>Ngày hết hạn: {bill.due_date}</Text>
-        <Text style={styles.content}>Số tiền thanh toán: {bill.amount} đồng</Text>
-        <Text style={styles.content}>Tình trạng thanh toán: {bill.payment_status}</Text>
+        <Text style={styles.content}>
+          <Text style={styles.text}>Mã hóa đơn:   </Text>
+          <Text>{bill.id}</Text>
+        </Text>
+
+        <Text style={styles.content}>
+          <Text style={styles.text}>Cư dân:    </Text>
+          <Text>{bill.first_name} {bill.last_name}</Text>
+        </Text>
+
+        <Text style={styles.content}>
+          <Text style={styles.text}>Loại hóa đơn:   </Text>
+          <Text>{bill.bill_type}</Text>
+        </Text>
+
+        <Text style={styles.content}>
+          <Text style={styles.text}>Ngày phát hành:   </Text>
+          <Text>{bill.issue_date}</Text>
+        </Text>
+
+        <Text style={styles.content}>
+          <Text style={styles.text}>Ngày hết hạn:   </Text>
+          <Text>{bill.due_date}</Text>
+        </Text>
+
+        <Text style={styles.content}>
+          <Text style={styles.text}>Số tiền thanh toán:   </Text>
+          <Text>{bill.amount} đồng</Text>
+        </Text>
+
+        <Text style={styles.content}>
+          <Text style={styles.text}>Tình trạng thanh toán:   </Text>
+          <Text> {bill.payment_status}</Text>
+        </Text>
+        
       </Card>
     </View>
   );
@@ -38,6 +66,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     margin: 10,
     padding:5,
+  },
+
+  text:{
+    color:'green',
+    fontWeight:'bold',
   },
 });
 

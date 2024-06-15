@@ -10,6 +10,7 @@ const Register = () => {
   const [last_name, setLastname] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [avatar, setAvatar] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -103,6 +104,14 @@ const Register = () => {
             keyboardType="default"
             style={styles.input}
           />
+            <TextInput
+            label="Số điện thoại..."
+            value={phone}
+            onChangeText={text => setPhone(text)}
+            keyboardType="default"
+            style={styles.input}
+          />
+
           <TextInput
             label="Email..."
             value={email}

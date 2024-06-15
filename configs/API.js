@@ -8,13 +8,15 @@ export const endpoints = {
   'create-new-account': '/api/residents/create-new-account/',
   'current-user': '/api/residents/current-user/',
   bills: '/api/bills/',
+  updateStatus: (id) => `/api/bills/${id}/`,
   login: '/o/token/',
   flats: '/api/flats/',
-  items: '/api/items/',
+  items: '/api/items/my-items/',
   feedback: '/api/feedback/',
   famembers: '/api/famembers/',
   survey: '/api/survey/',
   surveyresult: '/api/surveyresult/',
+  payment: '/api/payment/',
 };
 
 export const setAuthToken = async (token) => {
