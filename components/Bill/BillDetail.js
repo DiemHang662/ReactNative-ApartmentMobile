@@ -38,7 +38,7 @@ const BillDetail = ({ route }) => {
 
         <Text style={styles.content}>
           <Text style={styles.text}>Số tiền thanh toán:   </Text>
-          <Text>{bill.amount} đồng</Text>
+          <Text>{bill.amount}đ</Text>
         </Text>
 
         <Text style={styles.content}>

@@ -5,34 +5,33 @@ import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
 import { authApi, endpoints } from '../../configs/API';
 
-
-const BillList = () => {
-  const [bills, setBills] = useState([]);
+const FeedbackList = () => {
+  const [feedback, setFeedback] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('all');
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchBills = async () => {
+    const fetchFeedback = async () => {
       try {
-        const api = await authApi(); 
-        const params = filter === 'all' ? {} : { payment_status: filter.toUpperCase() };
-        const response = await api.get(endpoints.bills, { params });
-        setBills(response.data);
+        const api = await authApi();
+        const params = filter === 'all' ? {} : { resolved: filter === 'resolved' ? 'true' : 'false' };
+        const response = await api.get(endpoints.feedback, { params });
+        setFeedback(response.data);
       } catch (error) {
-        console.error('Error fetching bills:', error.response?.data || error.message);
+        console.error('Error fetching feedback:', error.response?.data || error.message);
       }
     };
 
-    fetchBills();
+    fetchFeedback();
   }, [filter]);
 
-  const handleSelectBill = (selectedBill) => {
-    navigation.navigate('BillDetail', { bill: selectedBill });
+  const handleSelectFeedback = (selectedFeedback) => {
+    navigation.navigate('FeedbackDetail', { fb: selectedFeedback });
   };
 
-  const filteredBills = bills.filter(bill =>
-    bill.bill_type.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredFeedback = feedback.filter(fb =>
+    fb.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -54,31 +53,31 @@ const BillList = () => {
         </Button>
         <Button
           mode="contained"
-          onPress={() => setFilter('paid')}
-          style={filter === 'paid' ? styles.activeButton : styles.inactiveButton}
+          onPress={() => setFilter('resolved')}
+          style={filter === 'resolved' ? styles.activeButton : styles.inactiveButton}
         >
-          Đã thanh toán
+          Đã giải quyết
         </Button>
         <Button
           mode="contained"
-          onPress={() => setFilter('unpaid')}
-          style={filter === 'unpaid' ? styles.activeButton : styles.inactiveButton}
+          onPress={() => setFilter('unresolved')}
+          style={filter === 'unresolved' ? styles.activeButton : styles.inactiveButton}
         >
-          Chưa thanh toán
+          Chưa giải quyết
         </Button>
       </View>
       <FlatList
-        data={filteredBills}
+        data={filteredFeedback}
         renderItem={({ item }) => (
           <ListItem
             key={item.id}
-            onPress={() => handleSelectBill(item)}
+            onPress={() => handleSelectFeedback(item)}
             bottomDivider
             containerStyle={styles.listItemContainer}
           >
             <ListItem.Content>
-              <ListItem.Title>{item.bill_type}</ListItem.Title>
-              <ListItem.Subtitle>{item.issue_date}</ListItem.Subtitle>
+              <ListItem.Title>{item.title}</ListItem.Title>
+              <ListItem.Subtitle>{item.created_date}</ListItem.Subtitle>
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
@@ -86,8 +85,12 @@ const BillList = () => {
         keyExtractor={item => item.id.toString()}
       />
 
-      <Button mode="contained"  onPress={() => navigation.navigate('AddBill')}
-        style={styles.addButton} >Thêm hóa đơn 
+    <Button
+        mode="contained"
+        onPress={() => navigation.navigate('Feedback')}
+        style={styles.addButton}
+      >
+        Thêm Phản Hồi
       </Button>
     </View>
   );
@@ -126,16 +129,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
   },
 
+  addButton: {
+    marginHorizontal: 20,
+    marginVertical: 10,
+    backgroundColor:'green',
+  },
+
   listItemContainer: {
     marginVertical: 8,
     padding: 20,
   },
-
-  addButton:{
-    backgroundColor:'green',
-    width:'90%',
-    marginLeft:20,
-  },
 });
 
-export default BillList;
+export default FeedbackList;

@@ -55,19 +55,19 @@ const Payment = () => {
           <View style={styles.billContainer}>
             <Text style={styles.content}>
               <Text style={styles.text}>Loại hóa đơn:   </Text>
-              <Text>  {item.bill_type}</Text>
+              <Text style={styles.text1}>  {item.bill_type}</Text>
             </Text>
             <Text style={styles.content}>
               <Text style={styles.text}>Số tiền thanh toán:   </Text>
-              <Text>  {item.amount} đồng</Text>
+              <Text style={styles.text1}>  {item.amount}đ</Text>
             </Text>
             <Text style={styles.content}>
               <Text style={styles.text}>Ngày phát hành:   </Text>
-              <Text>  {item.issue_date}</Text>
+              <Text style={styles.text1}>  {item.issue_date}</Text>
             </Text>
             <Text style={styles.content}>
               <Text style={styles.text}>Ngày hết hạn:   </Text>
-              <Text>  {item.due_date}</Text>
+              <Text style={styles.text1}>  {item.due_date}</Text>
             </Text>
             <View style={styles.buttonContainer}>
               <Button title="Thanh toán qua Momo" onPress={() => handleMomoPayment(item)} />
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#cccccc',
     padding: 10,
+    borderRadius:7,
   },
 
   content: {
@@ -100,8 +101,11 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: 'green',
     fontWeight: 'bold',
+  },
+  
+  text1:{
+    color:'red',
   },
 
   buttonContainer: {

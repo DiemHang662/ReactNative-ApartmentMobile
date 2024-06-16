@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Button, StyleSheet, ScrollView, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApi, endpoints } from '../../configs/API';
 
 const Survey = () => {
   const [surveys, setSurveys] = useState([]);
   const [selectedSurvey, setSelectedSurvey] = useState(null);
-  const [surveyResults, setSurveyResults] = useState([]);
   const [cleanlinessRating, setCleanlinessRating] = useState('');
   const [facilitiesRating, setFacilitiesRating] = useState('');
   const [servicesRating, setServicesRating] = useState('');
   const [error, setError] = useState(null);
+  const [resident] = useState('1'); // Assuming '1' is a placeholder for resident ID
 
   useEffect(() => {
     fetchSurveys();
@@ -21,64 +21,71 @@ const Survey = () => {
       const api = await authApi();
       const response = await api.get(endpoints.survey);
       setSurveys(response.data);
-    }
-     catch (error) {
+    } catch (error) {
       console.error('Error fetching surveys:', error);
       setError('Error fetching surveys. Please try again later.');
     }
   };
-  
-  const fetchSurveyResults = async (surveyId) => {
-    try {
-      const api = await authApi();
-      const response = await api.get(`endpoints/surveyresult=${surveyId}`);
-      setSurveyResults(response.data);
-    } catch (error) {
-      console.error('Error fetching survey results:', error);
-      setError('Error fetching survey results. Please try again later.');
-    }
-  }; 
 
   const handleSurveySelection = (survey) => {
     setSelectedSurvey(survey);
-    fetchSurveyResults(survey.id);
   };
 
   const submitSurvey = async () => {
     try {
-      const api = authApi();
-      const response = await api.post(endpoints.surveyresult, {
-        survey: selectedSurvey.id,
-        survey: selectedSurvey.id,
-        cleanliness_rating: cleanlinessRating,
-        facilities_rating: facilitiesRating,
-        services_rating: servicesRating,
-        resident: 3, 
-      });
-      if (response.ok) {
-        alert('Survey submitted successfully!');
-        setCleanlinessRating('');
-        setFacilitiesRating('');
-        setServicesRating('');
-      } else {
-        throw new Error('Failed to submit survey');
+      // Retrieve token from AsyncStorage
+      const token = await AsyncStorage.getItem('access_token');
+      if (!token) {
+        throw new Error('No token found');
       }
+  
+      // Perform the fetch request
+      const response = await fetch("http://192.168.1.6:8000/api/surveyresult/", {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          survey: selectedSurvey.id,
+          cleanliness_rating: cleanlinessRating,
+          facilities_rating: facilitiesRating,
+          services_rating: servicesRating,
+          resident: resident,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const data = await response.json();
+      console.info(data);
+      setCleanlinessRating('');
+      setFacilitiesRating('');
+      setServicesRating('');
     } catch (error) {
-      console.error('Error submitting survey:', error);
+      console.error('There was a problem with your fetch operation:', error);
       setError(`Error submitting survey. ${error.message}`);
     }
   };
 
+  
+  const renderSurveyItem = ({ item }) => (
+    <TouchableOpacity onPress={() => handleSurveySelection(item)} style={styles.surveyItem}>
+      <Text style={[styles.h3, selectedSurvey === item && { color: '#1E90FF' }]}>{item.title}</Text>
+    </TouchableOpacity>
+  );
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.h2}>Chọn khảo sát:</Text>
-      <View style={styles.list}>
-        {surveys.map(survey => (
-          <TouchableOpacity key={survey.id} onPress={() => handleSurveySelection(survey)} style={styles.surveyItem}>
-            <Text style={[styles.h3, selectedSurvey === survey && { color: '#1E90FF' }]}>{survey.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <FlatList
+        data={surveys}
+        renderItem={renderSurveyItem}
+        keyExtractor={item => item.id.toString()}
+        style={styles.list}
+      />
 
       {selectedSurvey && (
         <View style={styles.surveyDetail}>

@@ -11,15 +11,13 @@ const MomoPayment = ({ route }) => {
 
   const payment = async () => {
     try {
-      const api = await authApi();  // Obtain authenticated API instance
+      const api = await authApi();  
       const response = await api.patch(endpoints.updateStatus(bill.id), {
         payment_status: 'PAID',
       });
 
-      // Check if request was successful
       if (response.status === 200 || response.status === 204) {  // Adjust status codes as per your API response
         alert('Thanh toán thành công');
-        // Optionally update UI state or navigate to another screen
       } else {
         console.error('Unexpected status code:', response.status);
         alert('Có lỗi xảy ra');
@@ -38,30 +36,35 @@ const MomoPayment = ({ route }) => {
       <View style={styles.container}>
         <Text style={styles.h1}>THÔNG TIN TÀI KHOẢN</Text>
         <View style={styles.momo}>
-          <Text style={styles.text}>
-            <Text style={styles.text1}>Họ và tên:     </Text>
-            <Text style={styles.text2}>{bill.first_name} {bill.last_name}</Text>
+
+        <Text style={styles.textReceive}>
+            <Text style={styles.text1}>Số tài khoản:     </Text>
+            <Text style={styles.text2}>0346661367</Text>
           </Text>
           
-          <Text style={styles.text}>
+          <Text style={styles.textReceive}>
+            <Text style={styles.text1}>Người nhận:     </Text>
+            <Text style={styles.text2}>Đỗ Quỳnh Như</Text>
+          </Text>
+          
+          <Text style={styles.textReceive}>
             <Text style={styles.text1}>Số tài khoản:     </Text>
             <Text style={styles.text2}>{bill.phone}</Text>
           </Text>
 
-          <Text style={styles.text}>
-            <Text style={styles.text1}>Ngày phát hành:     </Text>
-            <Text style={styles.text2}>{bill.issue_date}  </Text>
+          <Text style={styles.textSend}>
+            <Text style={styles.text1}>Người gửi:     </Text>
+            <Text style={styles.text2}>{bill.first_name} {bill.last_name}</Text>
           </Text>
 
-          <Text style={styles.text}>
-            <Text style={styles.text1}>Ngày hết hạn:     </Text>
-            <Text style={styles.text2}>{bill.due_date}  </Text>
-          </Text>
-
-          <Text style={styles.text}>
+          <Text style={styles.textReceive}>
             <Text style={styles.text1}>Số tiền:     </Text>
-            <Text style={styles.text2}>{bill.amount}  đồng</Text>
+            <Text style={styles.text2}>{bill.amount}đ</Text>
           </Text>
+
+          <Text style={styles.total}>Tổng số tiền ( đã bao gồm phí giao dịch )</Text>
+          <Text style={styles.text3}>{bill.total_amount}đ</Text>
+          
 
           <View style={styles.payment}>
             <Button title="Xác nhận thanh toán" onPress={payment} color={'#D82D8B'} />
@@ -76,15 +79,14 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     padding: 10,
-    margin:25,
-    height:'90%',
+    margin:20,
+    height:'95%',
     padding:20,
   },
 
   scrollContainer:{
     backgroundColor:'#D82D8B',
-    width:'100%',
-    height:'100%',
+    flexGrow:1,
   },
 
   h1:{
@@ -101,11 +103,16 @@ const styles = StyleSheet.create({
     borderColor:'#B9B9B9',
     borderRadius:7,
     padding:15,
-    height:'80%',
+    height:'85%',
   },
 
-  text:{
+  textReceive:{
     margin:10,
+  },
+
+  textSend:{
+    marginTop:20,
+    padding:7,
   },
 
   text1:{
@@ -122,8 +129,20 @@ const styles = StyleSheet.create({
 
   },
 
+  text3:{
+    textAlign:'right',
+    fontWeight:'bold',
+    fontSize:22,
+  },
+
+  total:{
+    marginTop:20,
+    fontSize:20,
+    padding:10,
+  },
+
   payment: {
-    marginTop: 75,
+    marginTop: 50,
     width:'100%',
   },
 

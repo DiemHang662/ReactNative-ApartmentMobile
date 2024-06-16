@@ -8,14 +8,18 @@ export const endpoints = {
   'create-new-account': '/api/residents/create-new-account/',
   'current-user': '/api/residents/current-user/',
   bills: '/api/bills/',
+  'create-bill': '/api/bills/create-bill/',
   updateStatus: (id) => `/api/bills/${id}/`,
   login: '/o/token/',
   flats: '/api/flats/',
   items: '/api/items/my-items/',
   feedback: '/api/feedback/',
+  updateResolved: (id) => `/api/feedback/${id}/mark_as_resolved/`,
   famembers: '/api/famembers/',
   survey: '/api/survey/',
+  surveyID: (id) => `/api/survey/${id}/`, 
   surveyresult: '/api/surveyresult/',
+  surveyresultID: (id) => `/api/surveyresult/${id}/`,
   payment: '/api/payment/',
 };
 

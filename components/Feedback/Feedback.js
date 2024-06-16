@@ -8,8 +8,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const Feedback = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [token, setToken] = useState('');
+  const [first_name] = useState('1');
+  const [last_name] = useState('1');
   const [resident] = useState('1'); 
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     fetchToken();
@@ -40,6 +42,8 @@ const Feedback = () => {
           "title": title,
           "content": content,
           "resident": resident,
+          "first_name": first_name,
+          "last_name": last_name,
         }),
       });
 
@@ -59,7 +63,6 @@ const Feedback = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
     <View style={styles.container}>
-      <Text style={styles.h1}>PHẢN ÁNH TÌNH TRẠNG CHUNG CƯ</Text>
 
       <Input
         label="Chủ đề phản ánh" labelStyle={{ color: 'green'}}
@@ -101,15 +104,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: 'white',
-  },
-
-  h1: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: 'green',
-    textAlign: 'center',
-    marginBottom: 30,
-    marginTop:15,
   },
 
   inputContainer: {

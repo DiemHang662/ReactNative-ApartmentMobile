@@ -11,12 +11,17 @@ import Register from './components/Resident/Register';
 import Login from './components/Resident/Login'; 
 import BillList from './components/Bill/BillList'; 
 import BillDetail from './components/Bill/BillDetail'; 
+import AddBill from './components/Bill/AddBill'; 
 import Payment from './components/Payment/Payment';
 import MomoPayment from './components/Payment/MomoPayment';
 import Item from './components/Item/Item';
 import Feedback from './components/Feedback/Feedback';
+import FeedbackList from './components/Feedback/FeedbackList';
+import FeedbackDetail from './components/Feedback/FeedbackDetail';
 import Survey from './components/Survey/Survey';
 import Famember from './components/Famember/Famember'; 
+import FamemberList from './components/Famember/FamemberList'; 
+import FamemberDetail from './components/Famember/FamemberDetail'; 
 import { MyDispatchContext, MyUserContext } from './configs/Contexts';
 import MyUserReducer from './configs/MyUserReducer';
 
@@ -26,7 +31,7 @@ const Stack = createStackNavigator();
 
 function BillStack() {
   return (
-    <Stack.Navigator screenOptions={{
+    <Stack.Navigator initialRouteName="BillList" screenOptions={{
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontSize: 30, 
@@ -36,7 +41,26 @@ function BillStack() {
       }} >
 
       <Stack.Screen name="BillList" component={BillList} options={{ title: 'DANH SÁCH HÓA ĐƠN' }} />
+      <Stack.Screen name="AddBill" component={AddBill} options={{ title: 'THÊM HÓA ĐƠN' }} />
       <Stack.Screen name="BillDetail"component={BillDetail} options={{ title: 'CHI TIẾT HÓA ĐƠN' }} />
+    </Stack.Navigator>
+  );
+}
+
+function FeedbackStack() {
+  return (
+    <Stack.Navigator initialRouteName="FeedbackList" screenOptions={{
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontSize: 28, 
+          fontWeight: 'bold',
+          color:'green',
+        },
+      }} >
+
+      <Stack.Screen name="FeedbackList" component={FeedbackList} options={{ title: 'DANH SÁCH PHẢN ÁNH'}} />
+      <Stack.Screen name="Feedback"component={Feedback} options={{ title: 'PHẢN ÁNH TÌNH TRẠNG' }} />
+      <Stack.Screen name="FeedbackDetail"component={FeedbackDetail} options={{ title: 'CHI TIẾT PHẢN ÁNH' }} />
     </Stack.Navigator>
   );
 }
@@ -48,7 +72,7 @@ function PaymentStack() {
         headerTitleStyle: {
           fontSize: 18, 
           fontWeight: 'bold',
-          color:'#D82D8B',
+          color:'green',
         },
       }} >
       <Stack.Screen name="Payment" component={Payment} options={{ title: 'DANH SÁCH HÓA ĐƠN CHƯA THANH TOÁN' }} />
@@ -57,6 +81,23 @@ function PaymentStack() {
   );
 }
 
+
+function FamemberStack() {
+  return (
+    <Stack.Navigator initialRouteName="FamemberList" screenOptions={{
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontSize: 18, 
+          fontWeight: 'bold',
+          color:'green',
+        },
+      }} >
+      <Stack.Screen name="FamemberList" component={FamemberList} options={{ title: 'DANH SÁCH ĐĂNG KÝ' }} />
+      <Stack.Screen name="Famember"component={Famember} options={{ title: 'ĐĂNG KÝ XE CHO NGƯỜI THÂN' }} />
+      <Stack.Screen name="FamemberDetail" component={FamemberDetail} options={{ title: 'THÔNG TIN ĐĂNG KÝ' }} />
+    </Stack.Navigator>
+  );
+}
 
 function DrawerNavigator() {
   return (
@@ -91,13 +132,13 @@ function DrawerNavigator() {
         }}
       />
 
-      <Drawer.Screen name='Phản ánh' component={Feedback} 
+      <Drawer.Screen name='Phản ánh' component={FeedbackStack} 
         options={{
           drawerActiveTintColor: 'green', 
         }}
      />
 
-     <Drawer.Screen name='Đăng ký xe' component={Famember} 
+     <Drawer.Screen name='Đăng ký xe' component={FamemberStack} 
         options={{
           drawerActiveTintColor: 'green', 
         }}

@@ -8,7 +8,7 @@ const Famember = () => {
   const [name, setName] = useState('');
   const [numberXe, setNumberXe] = useState('');
   const [token, setToken] = useState('');
-  const [resident, setResident] = useState(''); 
+  const [resident, setResident] = useState(null); 
 
   useEffect(() => {
     fetchToken();
@@ -58,9 +58,7 @@ const Famember = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
     <View style={styles.container}>
-      <Text style={styles.h1}>ĐĂNG KÝ XE CHO NGƯỜI THÂN</Text>
-
-        
+  
       <Input
         label="Mã cư dân" labelStyle={{ color: 'green'}}
         placeholder="Nhập mã cư dân..."

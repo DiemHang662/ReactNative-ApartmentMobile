@@ -16,7 +16,7 @@ const Profile = ({ navigation }) => {
         const api = await authApi();
         const response = await api.get(endpoints.residents);
         console.log('API response:', response.data); // Log the response data for debugging
-        setResident(response.data);
+        setResident(response.data );
       } catch (error) {
         console.error('Error fetching profile:', error);
       } finally {
@@ -79,6 +79,7 @@ const Profile = ({ navigation }) => {
             <Text style={styles.text}>Email:  </Text> 
             <Text>{user.email}</Text>
           </Text>
+
         </Card>
         <Button style={styles.btlogout} labelStyle={{ color: 'white' }} icon="logout" onPress={handleLogout}>ĐĂNG XUẤT</Button>
       </View>
