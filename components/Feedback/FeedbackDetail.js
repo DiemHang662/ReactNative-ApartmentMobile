@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     color: 'green',
     fontWeight: 'bold',
   },
+  
   button: {
     marginTop: 20,
     marginLeft:45,

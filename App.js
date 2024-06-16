@@ -15,6 +15,8 @@ import AddBill from './components/Bill/AddBill';
 import Payment from './components/Payment/Payment';
 import MomoPayment from './components/Payment/MomoPayment';
 import Item from './components/Item/Item';
+import ItemList from './components/Item/ItemList';
+import ItemDetail from './components/Item/ItemDetail';
 import Feedback from './components/Feedback/Feedback';
 import FeedbackList from './components/Feedback/FeedbackList';
 import FeedbackDetail from './components/Feedback/FeedbackDetail';
@@ -99,6 +101,23 @@ function FamemberStack() {
   );
 }
 
+function ItemStack() {
+  return (
+    <Stack.Navigator initialRouteName="ItemList" screenOptions={{
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontSize: 18, 
+          fontWeight: 'bold',
+          color:'green',
+        },
+      }} >
+      <Stack.Screen name="ItemList" component={ItemList} options={{ title: 'TỦ HÀNG ĐIỆN TỬ' }} />
+      <Stack.Screen name="Item"component={Item} options={{ title: 'THÊM HÀNG ĐIỆN TỬ' }} />
+      <Stack.Screen name="ItemDetail" component={ItemDetail} options={{ title: 'THÔNG TIN HÀNG' }} />
+    </Stack.Navigator>
+  );
+}
+
 function DrawerNavigator() {
   return (
     <Drawer.Navigator>
@@ -120,7 +139,7 @@ function DrawerNavigator() {
         }}
      />
 
-      <Drawer.Screen name='Tủ đồ điện' component={Item} 
+      <Drawer.Screen name='Tủ đồ điện' component={ItemStack} 
         options={{
           drawerActiveTintColor: 'green', 
         }}

@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Alert, ScrollView } from 'react-native';
+import { Input, Button, Text } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApi, endpoints } from '../../configs/API';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; 
 
 const Item = () => {
-  const [items, setItems] = useState([]);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [first_name] = useState('1');
+  const [last_name] = useState('1');
+  const [resident] = useState('1'); 
   const [token, setToken] = useState('');
 
   useEffect(() => {
     fetchToken();
   }, []);
-
-  useEffect(() => {
-    if (token) {
-      fetchItems();
-    }
-  }, [token]);
 
   const fetchToken = async () => {
     try {
@@ -30,80 +30,94 @@ const Item = () => {
     }
   };
 
-  const fetchItems = async () => {
+  const addFeedback = async () => {
     try {
-      const api = await authApi();
-      const response = await api.get(endpoints.items);
-      const items = response.data;
-      setItems(items);
-      checkPendingItems(items);
+      const response = await fetch("http://192.168.1.6:8000/api/feedback/", {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "title": title,
+          "content": content,
+          "resident": resident,
+          "first_name": first_name,
+          "last_name": last_name,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.info(data);
+      setTitle('');
+      setContent('');
     } catch (error) {
-      console.error('Error fetching items:', error);
+      console.error('There was a problem with your fetch operation:', error);
     }
-  };
-
-  const checkPendingItems = (items) => {
-    const pending = items.filter(item => item.status === 'PENDING');
-    if (pending.length > 0) {
-      Alert.alert(
-        'Thông báo',
-        `Bạn có ${pending.length} món hàng đang chờ nhận.`,
-        [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
-      );
-    }
-  };
-
-  const renderItems = () => {
-    return items.map(item => (
-      <View style={styles.h3} key={item.id}>
-        <Text style={styles.h6}>
-          <Text style={styles.text}>Tên hàng: </Text>
-          <Text>{item.name}</Text>
-        </Text>
-
-        <Text style={styles.h6}>
-          <Text style={styles.text}>Trạng thái: </Text>
-          <Text>{item.status}</Text>
-        </Text>
-      </View>
-    ));
   };
 
   return (
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
     <View style={styles.container}>
-      <Text style={styles.h1}>TỦ HÀNG ĐIỆN TỬ</Text>
-      {renderItems()}
+
+      <Input
+        label="Chủ đề phản ánh" labelStyle={{ color: 'green'}}
+        placeholder="Nhập tiêu đề phản ánh..."
+        value={title}
+        onChangeText={(text) => setTitle(text)}
+        multiline numberOfLines={3}
+        containerStyle={styles.inputContainer}
+      />
+
+      <Input
+        label="Nội dung phản ánh: " labelStyle={{ color: 'green'}}
+        placeholder="Nhập nội dung phản ánh..."
+        value={content}
+        onChangeText={(text) => setContent(text)}
+        multiline numberOfLines={6}
+        containerStyle={styles.inputContainer}
+      />
+
+      <Button
+        title="  Gửi"
+        onPress={addFeedback}
+        icon={<Icon name="send" size={20}  color={'white'}/>} // Icon gửi từ MaterialCommunityIcons
+        buttonStyle={styles.button}
+        disabled={!title || !content}
+      />
+
     </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
+
   container: {
     flex: 1,
+    padding: 20,
     backgroundColor: 'white',
-    paddingVertical: 60,
   },
-  h1: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: 'green',
-    textAlign: 'center',
+
+  inputContainer: {
     marginBottom: 20,
+    padding:10,
+    borderWidth:0,
   },
-  h3: {
-    paddingVertical: 30,
-    fontSize: 25,
-  },
-  h6: {
-    fontSize: 20,
-    paddingLeft: 20,
-    color: 'black',
-  },
-  
-  text: {
-    color: 'green',
-    padding: 10,
-    fontWeight: 'bold',
+
+  button: {
+    backgroundColor: 'green',
+    width:'30%',
+    height:40,
+    borderRadius:50,
+    marginLeft:120,
   },
 });
 
