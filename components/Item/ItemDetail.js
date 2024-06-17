@@ -1,34 +1,31 @@
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { Text, Card, Button } from 'react-native-elements';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApi, endpoints } from '../../configs/API';  
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ItemDetail = ({ route, navigation }) => {
   const { item } = route.params;
 
-  const handleReceived = async () => {
+  const handleReceived= async () => {
     try {
       const api = await authApi();  
       const token = await AsyncStorage.getItem('access_token');
-      
       const response = await api.patch(endpoints.updateReceived(item.id),
-        {},  
+        {}, 
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-
-      console.log('Marked item as received successfully:', response.data);
-      navigation.goBack();
+      console.log('Cư dân đã nhận hàng:', response.data);
+      navigation.goBack(); 
     } catch (error) {
-      console.error('Error marking item as received:', error);
-      Alert.alert("Error", "Failed to mark item as received. Please try again later.");
+      console.error('Đã xảy ra lỗi:', error);
+      Alert.alert("Xin lỗi", "Cư dân không được cấp quyền thực hiện");
     }
   };
-
   return (
     <View style={styles.container}>
       <Card>

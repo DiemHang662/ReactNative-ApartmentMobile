@@ -8,13 +8,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Home from './components/Home/Home';
 import Profile from './components/Resident/Profile';
 import Register from './components/Resident/Register';
+import ChangePassword from './components/Resident/ChangePassword';
 import Login from './components/Resident/Login'; 
 import BillList from './components/Bill/BillList'; 
 import BillDetail from './components/Bill/BillDetail'; 
 import AddBill from './components/Bill/AddBill'; 
 import Payment from './components/Payment/Payment';
 import MomoPayment from './components/Payment/MomoPayment';
-import Item from './components/Item/Item';
+import AddItem from './components/Item/AddItem';
 import ItemList from './components/Item/ItemList';
 import ItemDetail from './components/Item/ItemDetail';
 import Feedback from './components/Feedback/Feedback';
@@ -112,8 +113,24 @@ function ItemStack() {
         },
       }} >
       <Stack.Screen name="ItemList" component={ItemList} options={{ title: 'TỦ HÀNG ĐIỆN TỬ' }} />
-      <Stack.Screen name="Item"component={Item} options={{ title: 'THÊM HÀNG ĐIỆN TỬ' }} />
+      <Stack.Screen name="AddItem"component={AddItem} options={{ title: 'THÊM HÀNG ĐIỆN TỬ' }} />
       <Stack.Screen name="ItemDetail" component={ItemDetail} options={{ title: 'THÔNG TIN HÀNG' }} />
+    </Stack.Navigator>
+  );
+}
+
+function ProfileAndChange() {
+  return (
+    <Stack.Navigator screenOptions={{
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+            fontSize:28,
+            fontWeight:'bold',
+            color:'green', 
+        },
+      }} >
+      <Stack.Screen name="Profile" component={Profile} options={{ title: '' }} />
+      <Stack.Screen name="ChangePassword"component={ChangePassword} options={{ title: 'ĐỔI MẬT KHẨU' }} />
     </Stack.Navigator>
   );
 }
@@ -200,7 +217,7 @@ function App() {
                 }} />
               </>
             ) : (
-              <Tab.Screen name="Hồ sơ" component={Profile} options={{
+              <Tab.Screen name="Hồ sơ" component={ProfileAndChange} options={{
                 tabBarIcon: ({ color, size }) => (
                   <MaterialCommunityIcons name="account" color={color} size={size} />
                 ),

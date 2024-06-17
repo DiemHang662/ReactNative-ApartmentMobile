@@ -86,7 +86,7 @@ const ItemList = () => {
       />
       <Button
         mode="contained"
-        onPress={() => navigation.navigate('AddItem')}
+        onPress={(AddItem) => navigation.navigate('AddItem')}
         style={styles.addButton}
       >
         Thêm món hàng

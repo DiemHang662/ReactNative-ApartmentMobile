@@ -1,18 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.1.6:8000/';
+const BASE_URL = 'http://192.168.0.111:8000/';
 
 export const endpoints = {
   residents: '/api/residents/',
   'create-new-account': '/api/residents/create-new-account/',
   'current-user': '/api/residents/current-user/',
+  'change-password': '/api/residents/change-password/',
   bills: '/api/bills/',
   'create-bill': '/api/bills/create-bill/',
   updateStatus: (id) => `/api/bills/${id}/`,
   login: '/o/token/',
   flats: '/api/flats/',
   items: '/api/items/',
+  'create-ỉtem': '/api/items/create-item/',
   updateReceived: (id) => `/api/items/${id}/mark_received/`,
   feedback: '/api/feedback/',
   updateResolved: (id) => `/api/feedback/${id}/mark_as_resolved/`,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, StyleSheet, ActivityIndicator, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Button } from "react-native-paper";
-import { Text, Card } from 'react-native-elements';
+import { Card } from 'react-native-elements';
 import { MyDispatchContext } from '../../configs/Contexts';
 import { authApi, endpoints } from '../../configs/API';
 
@@ -16,7 +16,7 @@ const Profile = ({ navigation }) => {
         const api = await authApi();
         const response = await api.get(endpoints.residents);
         console.log('API response:', response.data); // Log the response data for debugging
-        setResident(response.data );
+        setResident(response.data);
       } catch (error) {
         console.error('Error fetching profile:', error);
       } finally {
@@ -31,6 +31,10 @@ const Profile = ({ navigation }) => {
     dispatch({ type: "logout" });
   };
 
+  const handleChangePassword = () => {
+    navigation.navigate('ChangePassword');
+  };
+
   if (loading) {
     return <ActivityIndicator size="large" color="#009900" />;
   }
@@ -42,7 +46,7 @@ const Profile = ({ navigation }) => {
       </View>
     );
   }
-  
+
   const user = resident[0];
 
   return (
@@ -61,27 +65,31 @@ const Profile = ({ navigation }) => {
           <Card.Title style={styles.h2}>HỒ SƠ CÁ NHÂN </Card.Title>
           <Card.Divider />
           <Text style={styles.content}>
-            <Text style={styles.text}>Họ và tên:  </Text> 
-            <Text>{user.first_name} {user.last_name}</Text>
+            <Text style={styles.text}>Họ và tên: </Text>
+            <Text>  {user.first_name} {user.last_name}</Text>
           </Text>
 
           <Text style={styles.content}>
-            <Text style={styles.text}>Tên tài khoản:  </Text> 
-            <Text>{user.username}</Text>
+            <Text style={styles.text}>Tên tài khoản: </Text>
+            <Text>  {user.username}</Text>
           </Text>
 
           <Text style={styles.content}>
-            <Text style={styles.text}>Số điện thoại:  </Text> 
-            <Text>{user.phone}</Text>
+            <Text style={styles.text}>Số điện thoại: </Text>
+            <Text>  {user.phone}</Text>
           </Text>
 
           <Text style={styles.content}>
-            <Text style={styles.text}>Email:  </Text> 
-            <Text>{user.email}</Text>
+            <Text style={styles.text}>Email: </Text>
+            <Text>  {user.email}</Text>
           </Text>
 
         </Card>
         <Button style={styles.btlogout} labelStyle={{ color: 'white' }} icon="logout" onPress={handleLogout}>ĐĂNG XUẤT</Button>
+
+        <TouchableOpacity style={styles.changePassword} onPress={handleChangePassword}>
+          <Text style={styles.textPassword}> Đổi mật khẩu ?</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -91,12 +99,14 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
   },
+
   container: {
     flex: 1,
     backgroundColor: 'white',
     padding: 10,
     height: '100%',
   },
+
   h1: {
     textAlign: 'center',
     fontSize: 25,
@@ -105,6 +115,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textTransform: 'uppercase',
   },
+
   h2: {
     fontSize: 20,
     color: 'green',
@@ -113,26 +124,40 @@ const styles = StyleSheet.create({
     padding: 7,
     margin: 20,
   },
+
   content: {
-    fontSize: 18,
+    fontSize: 19,
     margin: 10,
     padding: 5,
   },
 
-  text:{
-    color:'green',
-    fontWeight:'bold',
+  text: {
+    color: 'green',
+    fontWeight: 'bold',
   },
 
   error: {
     textAlign: 'center',
     color: 'red',
   },
+
   btlogout: {
     backgroundColor: '#CC0000',
-    width: '50%',
+    width: '40%',
     marginTop: 30,
-    marginLeft: 80,
+    marginLeft: 120,
+  },
+
+  changePassword: {
+    alignItems: 'center',
+    marginTop: 25,
+  },
+
+  textPassword: {
+    fontSize: 18,
+    color: 'blue',
+    fontWeight:'500',
+    textDecorationLine: 'underline',
   },
 });
 

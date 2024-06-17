@@ -32,7 +32,7 @@ const Feedback = () => {
 
   const addFeedback = async () => {
     try {
-      const response = await fetch("http://192.168.1.6:8000/api/feedback/", {
+      const response = await fetch("http://192.168.0.111:8000/api/feedback/", {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${token}`,
