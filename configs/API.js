@@ -8,6 +8,7 @@ export const endpoints = {
   'create-new-account': '/api/residents/create-new-account/',
   'current-user': '/api/residents/current-user/',
   'change-password': '/api/residents/change-password/',
+  'change-avatar': '/api/residents/change-avatar/',
   bills: '/api/bills/',
   'create-bill': '/api/bills/create-bill/',
   updateStatus: (id) => `/api/bills/${id}/`,

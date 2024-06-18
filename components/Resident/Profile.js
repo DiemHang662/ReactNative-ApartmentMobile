@@ -1,31 +1,38 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Button } from "react-native-paper";
 import { Card } from 'react-native-elements';
 import { MyDispatchContext } from '../../configs/Contexts';
 import { authApi, endpoints } from '../../configs/API';
+import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect if using @react-navigation/native
 
 const Profile = ({ navigation }) => {
   const [resident, setResident] = useState(null);
   const [loading, setLoading] = useState(true);
   const dispatch = useContext(MyDispatchContext);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const api = await authApi();
-        const response = await api.get(endpoints.residents);
-        console.log('API response:', response.data); // Log the response data for debugging
-        setResident(response.data);
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
+  const fetchProfile = useCallback(async () => {
+    try {
+      const api = await authApi();
+      const response = await api.get(endpoints.residents);
+      console.log('API response:', response.data); // Log the response data for debugging
+      setResident(response.data);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchProfile(); // Fetch profile data when the screen is focused
+    }, [fetchProfile])
+  );
 
   const handleLogout = () => {
     dispatch({ type: "logout" });
@@ -33,6 +40,13 @@ const Profile = ({ navigation }) => {
 
   const handleChangePassword = () => {
     navigation.navigate('ChangePassword');
+  };
+
+  const handleChangeAvatar = async () => {
+    navigation.navigate('ChangeAvatar');
+    // Assume here you have a function to handle avatar change and it updates the avatar_url in your API
+    // After avatar change, you can manually refresh the profile
+    await fetchProfile();
   };
 
   if (loading) {
@@ -89,6 +103,10 @@ const Profile = ({ navigation }) => {
 
         <TouchableOpacity style={styles.changePassword} onPress={handleChangePassword}>
           <Text style={styles.textPassword}> Đổi mật khẩu ?</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.changePassword} onPress={handleChangeAvatar}>
+          <Text style={styles.textPassword}> Đổi avatar</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

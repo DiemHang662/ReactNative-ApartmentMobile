@@ -9,6 +9,7 @@ import Home from './components/Home/Home';
 import Profile from './components/Resident/Profile';
 import Register from './components/Resident/Register';
 import ChangePassword from './components/Resident/ChangePassword';
+import ChangeAvatar from './components/Resident/ChangeAvatar';
 import Login from './components/Resident/Login'; 
 import BillList from './components/Bill/BillList'; 
 import BillDetail from './components/Bill/BillDetail'; 
@@ -121,7 +122,7 @@ function ItemStack() {
 
 function ProfileAndChange() {
   return (
-    <Stack.Navigator screenOptions={{
+    <Stack.Navigator initialRouteName="Profile" screenOptions={{
         headerTitleAlign: 'center',
         headerTitleStyle: {
             fontSize:28,
@@ -131,6 +132,7 @@ function ProfileAndChange() {
       }} >
       <Stack.Screen name="Profile" component={Profile} options={{ title: '' }} />
       <Stack.Screen name="ChangePassword"component={ChangePassword} options={{ title: 'ĐỔI MẬT KHẨU' }} />
+      <Stack.Screen name="ChangeAvatar"component={ChangeAvatar} options={{ title: 'ĐỔI ẢNH ĐẠI DIỆN' }} />
     </Stack.Navigator>
   );
 }
@@ -203,25 +205,26 @@ function App() {
             }} />
            
             {resident === null ? (
-              <>
-                <Tab.Screen name="Đăng ký" component={Register} options={{
-                  tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="account-plus-outline" color={color} size={size} />
-                  ),
-                }} />
-
                 <Tab.Screen name="Đăng nhập" component={Login} options={{
                   tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="login" color={color} size={size} />
                   ),
                 }} />
-              </>
+            
             ) : (
+              <>
               <Tab.Screen name="Hồ sơ" component={ProfileAndChange} options={{
                 tabBarIcon: ({ color, size }) => (
                   <MaterialCommunityIcons name="account" color={color} size={size} />
                 ),
               }} />
+
+              <Tab.Screen name="Đăng ký" component={Register} options={{
+                  tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="account-plus-outline" color={color} size={size} />
+                  ),
+                }} />
+              </>
             )}
 
           </Tab.Navigator>
