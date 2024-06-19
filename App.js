@@ -15,7 +15,7 @@ import BillList from './components/Bill/BillList';
 import BillDetail from './components/Bill/BillDetail'; 
 import AddBill from './components/Bill/AddBill'; 
 import Payment from './components/Payment/Payment';
-import MomoPayment from './components/Payment/MomoPayment';
+import Pay from './components/Payment/Pay';
 import AddItem from './components/Item/AddItem';
 import ItemList from './components/Item/ItemList';
 import ItemDetail from './components/Item/ItemDetail';
@@ -80,7 +80,7 @@ function PaymentStack() {
         },
       }} >
       <Stack.Screen name="Payment" component={Payment} options={{ title: 'DANH SÁCH HÓA ĐƠN CHƯA THANH TOÁN' }} />
-      <Stack.Screen name="MomoPayment"component={MomoPayment} options={{ title: 'THANH TOÁN BẰNG VÍ MOMO' }} />
+      <Stack.Screen name="Pay"component={Pay} options={{ title: 'THANH TOÁN' }} />
     </Stack.Navigator>
   );
 }
@@ -119,6 +119,7 @@ function ItemStack() {
     </Stack.Navigator>
   );
 }
+
 
 function ProfileAndChange() {
   return (
@@ -182,6 +183,12 @@ function DrawerNavigator() {
         }}
      />
 
+    <Drawer.Screen name='Thống kê khảo sát' component={FamemberStack} 
+        options={{
+          drawerActiveTintColor: 'green', 
+        }}
+     />
+
     </Drawer.Navigator>
   );
 }
@@ -213,17 +220,18 @@ function App() {
             
             ) : (
               <>
+                <Tab.Screen name="Đăng ký" component={Register} options={{
+                  tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="account-plus" color={color} size={size} />
+                  ),
+                }} />
+                
               <Tab.Screen name="Hồ sơ" component={ProfileAndChange} options={{
                 tabBarIcon: ({ color, size }) => (
                   <MaterialCommunityIcons name="account" color={color} size={size} />
                 ),
               }} />
 
-              <Tab.Screen name="Đăng ký" component={Register} options={{
-                  tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="account-plus-outline" color={color} size={size} />
-                  ),
-                }} />
               </>
             )}
 

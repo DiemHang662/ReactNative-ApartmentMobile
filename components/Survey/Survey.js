@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Button, StyleSheet, ScrollView, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApi, endpoints } from '../../configs/API';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation from @react-navigation/native
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Survey = () => {
+  const navigation = useNavigation(); // Hook to access navigation object
+
   const [surveys, setSurveys] = useState([]);
   const [selectedSurvey, setSelectedSurvey] = useState(null);
   const [cleanlinessRating, setCleanlinessRating] = useState('');
   const [facilitiesRating, setFacilitiesRating] = useState('');
   const [servicesRating, setServicesRating] = useState('');
   const [error, setError] = useState(null);
-  const [resident] = useState('1'); // Assuming '1' is a placeholder for resident ID
+  const [resident] = useState('1');
 
   useEffect(() => {
     fetchSurveys();
@@ -31,16 +35,15 @@ const Survey = () => {
     setSelectedSurvey(survey);
   };
 
+
   const submitSurvey = async () => {
     try {
-      // Retrieve token from AsyncStorage
       const token = await AsyncStorage.getItem('access_token');
       if (!token) {
         throw new Error('No token found');
       }
-  
-      // Perform the fetch request
-      const response = await fetch("http://192.168.1.6:8000/api/surveyresult/", {
+
+      const response = await fetch("http://192.168.0.111:8000/api/surveyresult/", {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -54,11 +57,11 @@ const Survey = () => {
           resident: resident,
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-  
+
       const data = await response.json();
       console.info(data);
       setCleanlinessRating('');
@@ -70,7 +73,6 @@ const Survey = () => {
     }
   };
 
-  
   const renderSurveyItem = ({ item }) => (
     <TouchableOpacity onPress={() => handleSurveySelection(item)} style={styles.surveyItem}>
       <Text style={[styles.h3, selectedSurvey === item && { color: '#1E90FF' }]}>{item.title}</Text>
@@ -80,6 +82,7 @@ const Survey = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.h2}>Chọn khảo sát:</Text>
+
       <FlatList
         data={surveys}
         renderItem={renderSurveyItem}
@@ -93,16 +96,27 @@ const Survey = () => {
 
           <Text style={styles.h4}>Nhập mức độ khảo sát cho tình hình vệ sinh</Text>
           <TextInput
-            placeholder="Vệ sinh" value={cleanlinessRating}
-            onChangeText={text => setCleanlinessRating(text)} style={styles.input} />
+            placeholder="Vệ sinh"
+            value={cleanlinessRating}
+            onChangeText={text => setCleanlinessRating(text)}
+            style={styles.input}
+          />
 
           <Text style={styles.h4}>Nhập mức độ khảo sát cho tình hình cơ sở vật chất</Text>
-          <TextInput placeholder="Cơ sở vật chất" value={facilitiesRating}
-            onChangeText={text => setFacilitiesRating(text)} style={styles.input} />
+          <TextInput
+            placeholder="Cơ sở vật chất"
+            value={facilitiesRating}
+            onChangeText={text => setFacilitiesRating(text)}
+            style={styles.input}
+          />
 
           <Text style={styles.h4}>Nhập mức độ khảo sát cho tình hình dịch vụ</Text>
-          <TextInput placeholder="Dịch vụ" value={servicesRating}
-            onChangeText={text => setServicesRating(text)} style={styles.input} />
+          <TextInput
+            placeholder="Dịch vụ"
+            value={servicesRating}
+            onChangeText={text => setServicesRating(text)}
+            style={styles.input}
+          />
 
           <Button title="Gửi khảo sát" onPress={submitSurvey} />
         </View>
@@ -117,10 +131,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 20,
     backgroundColor: 'white',
-  },
-
-  list: {
-    marginVertical: 20,
   },
 
   h2: {
@@ -171,9 +181,15 @@ const styles = StyleSheet.create({
     color: 'red',
     marginTop: 20,
   },
-
-  resultItem: {
-    marginBottom: 10,
+  
+  iconButton: {
+    alignItems: 'center',
+    marginLeft:300,
+  },
+  
+  text: {
+    marginTop: 5,
+    fontSize: 12,
   },
 });
 

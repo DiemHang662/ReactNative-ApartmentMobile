@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, Alert } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
@@ -9,6 +9,7 @@ const ItemList = () => {
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('all');
+  const [pendingCount, setPendingCount] = useState(0);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -18,6 +19,15 @@ const ItemList = () => {
         const params = filter === 'all' ? {} : { status: filter };
         const response = await api.get(endpoints.items, { params });
         setItems(response.data);
+
+        // Calculate the number of pending items
+        const pendingItems = response.data.filter(item => item.status === 'PENDING').length;
+        setPendingCount(pendingItems);
+
+        // Show alert if there are pending items
+        if (pendingItems > 0) {
+          Alert.alert(`Bạn có ${pendingItems} món hàng đang chờ nhận`);
+        }
       } catch (error) {
         console.error('Error fetching items:', error.response?.data || error.message);
       }

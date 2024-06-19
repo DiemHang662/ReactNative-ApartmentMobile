@@ -5,6 +5,7 @@ import { Card } from 'react-native-elements';
 import { MyDispatchContext } from '../../configs/Contexts';
 import { authApi, endpoints } from '../../configs/API';
 import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect if using @react-navigation/native
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Profile = ({ navigation }) => {
   const [resident, setResident] = useState(null);
@@ -30,7 +31,7 @@ const Profile = ({ navigation }) => {
 
   useFocusEffect(
     useCallback(() => {
-      fetchProfile(); // Fetch profile data when the screen is focused
+      fetchProfile(); // Reload lại Profile sau khi đổi ảnh đại diện
     }, [fetchProfile])
   );
 
@@ -44,8 +45,6 @@ const Profile = ({ navigation }) => {
 
   const handleChangeAvatar = async () => {
     navigation.navigate('ChangeAvatar');
-    // Assume here you have a function to handle avatar change and it updates the avatar_url in your API
-    // After avatar change, you can manually refresh the profile
     await fetchProfile();
   };
 
@@ -71,9 +70,12 @@ const Profile = ({ navigation }) => {
           {user.avatar_url && (
             <Image
               source={{ uri: user.avatar_url }}
-              style={{ width: 150, height: 150, borderRadius: 150 }}
+              style={{ width: 200, height: 200, borderRadius: 180 }}
             />
           )}
+            <TouchableOpacity onPress={handleChangeAvatar} style={styles.iconButton}>
+            <Text style={styles.textAvatar}><MaterialCommunityIcons name="image-plus" size={25} color="gray" />  Đổi ảnh</Text>
+          </TouchableOpacity>
         </View>
         <Card>
           <Card.Title style={styles.h2}>HỒ SƠ CÁ NHÂN </Card.Title>
@@ -105,9 +107,6 @@ const Profile = ({ navigation }) => {
           <Text style={styles.textPassword}> Đổi mật khẩu ?</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.changePassword} onPress={handleChangeAvatar}>
-          <Text style={styles.textPassword}> Đổi avatar</Text>
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -129,18 +128,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 25,
     fontWeight: 'bold',
-    color: "green",
+    color: "red",
     marginBottom: 20,
     textTransform: 'uppercase',
   },
 
   h2: {
-    fontSize: 20,
-    color: 'green',
+    fontSize: 22,
+    color: 'red',
     fontWeight: 'bold',
     textAlign: 'center',
     padding: 7,
-    margin: 20,
+    margin: 7,
   },
 
   content: {
@@ -177,6 +176,15 @@ const styles = StyleSheet.create({
     fontWeight:'500',
     textDecorationLine: 'underline',
   },
+
+  textAvatar:{
+    fontSize:15,
+  },
+
+  iconButton:{
+    marginTop:10,
+    marginBottom:20,
+  }
 });
 
 export default Profile;

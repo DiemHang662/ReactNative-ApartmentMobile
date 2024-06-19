@@ -16,7 +16,7 @@ const ChangeAvatar = () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [4,3],
       quality: 1,
     });
 
@@ -58,25 +58,37 @@ const ChangeAvatar = () => {
 
   return (
     <View style={styles.container}>
-      {avatar && <Image source={{ uri: avatar.uri }} style={styles.avatarImage} />}
-      <Button title="Choose Avatar" onPress={handleChooseAvatar} />
-      <Button title="Upload Avatar" onPress={handleUploadAvatar} />
+       {avatar && <Image source={{ uri: avatar.uri }} style={styles.avatarImage} />}
+      <View style={styles.buttonContainer}>
+        <Button title="Chọn ảnh" onPress={handleChooseAvatar} color={'green'} />
+        <Button  title="Đổi ảnh đại diện" onPress={handleUploadAvatar} color={'green'}  />
     </View>
+  </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    backgroundColor:'white',
     alignItems: 'center',
+    justifyContent: 'center',
+    height:'100%',
   },
+
   avatarImage: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
+    width: 400,
+    height: 500,
     marginBottom: 20,
   },
+
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '85%',
+    marginBottom: 20,
+    marginTop:20,
+  },
+
 });
 
 export default ChangeAvatar;
