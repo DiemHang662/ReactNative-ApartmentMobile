@@ -20,11 +20,9 @@ const ItemList = () => {
         const response = await api.get(endpoints.items, { params });
         setItems(response.data);
 
-        // Calculate the number of pending items
         const pendingItems = response.data.filter(item => item.status === 'PENDING').length;
         setPendingCount(pendingItems);
 
-        // Show alert if there are pending items
         if (pendingItems > 0) {
           Alert.alert(`Bạn có ${pendingItems} món hàng đang chờ nhận`);
         }

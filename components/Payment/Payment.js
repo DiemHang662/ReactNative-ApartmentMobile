@@ -4,6 +4,7 @@ import axios from 'axios';
 import { authApi, endpoints } from '../../configs/API';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CryptoJS from 'crypto-js';
 
 const Payment = () => {
     const [bills, setBills] = useState([]);
@@ -38,37 +39,54 @@ const Payment = () => {
         }
     };
 
-    const handlePay = (bill) => {
-        navigation.navigate('Pay', { bill, onPaymentSuccess: fetchBills });
-    };
-
     const handleMomo = async (item) => {
         try {
             const api = await authApi();
-            const amount = parseFloat(item.amount);
-
+            const partnerCode = "MOMO";
+            const accessKey = "F8BBA842ECF85";
+            const secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
+            const requestId = `${partnerCode}${Date.now()}`;
+            const orderId = `MM${Date.now()}`;
+            const orderInfo = "Thanh toán hóa đơn";
+            const redirectUrl = "https://momo.vn/return";
+            const ipnUrl = "https://callback.url/notify";
+            const amount = item.amount; 
+            const requestType = "payWithATM";
+            const extraData = "";
+    
+            const rawSignature = `accessKey=${accessKey}&amount=${amount}&extraData=${extraData}&ipnUrl=${ipnUrl}&orderId=${orderId}&orderInfo=${orderInfo}&partnerCode=${partnerCode}&redirectUrl=${redirectUrl}&requestId=${requestId}&requestType=${requestType}`;
+    
+            const signature = CryptoJS.HmacSHA256(rawSignature, secretKey).toString(CryptoJS.enc.Hex);
+    
             const requestBody = {
-                amount: amount.toFixed(3), // Format amount to 3 decimal places as needed
-                bill_type: item.bill_type,
-                due_date: item.due_date,
-                issue_date: item.issue_date,
-                resident_id: 2, // Ensure this is correctly set
+                partnerCode,
+                accessKey,
+                requestId,
+                amount,
+                orderId,
+                orderInfo,
+                redirectUrl,
+                ipnUrl,
+                extraData,
+                requestType,
+                signature,
+                lang: "vi"
             };
-
+    
             console.log('Request Body:', JSON.stringify(requestBody)); // Log the request body for debugging
-
+    
             const response = await axios.post('https://test-payment.momo.vn/v2/gateway/api/create', JSON.stringify(requestBody), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-
+    
             console.log('Momo payment response:', response.data); // Log the entire response for detailed debugging
-
+    
             if (response.data && response.data.payUrl) {
                 const payUrl = response.data.payUrl.trim();
                 console.log('Trimmed PayUrl:', payUrl); // Log trimmed payUrl for debugging
-
+    
                 Linking.openURL(payUrl)
                     .then(() => {
                         console.log('Successfully opened payUrl:', payUrl);
@@ -87,6 +105,7 @@ const Payment = () => {
         }
     };
 
+
     return (
         <View style={styles.container}>
             <FlatList
@@ -100,7 +119,7 @@ const Payment = () => {
                         </Text>
                         <Text style={styles.content}>
                             <Text style={styles.text}>Số tiền thanh toán: </Text>
-                            <Text style={styles.text1}>     {item.amount}đ</Text>
+                            <Text style={styles.text1}>     {item.amount} VND</Text>
                         </Text>
                         <Text style={styles.content}>
                             <Text style={styles.text}>Ngày phát hành: </Text>
@@ -111,7 +130,6 @@ const Payment = () => {
                             <Text style={styles.text1}>     {item.due_date}</Text>
                         </Text>
                         <View style={styles.buttonContainer}>
-                            <Button title="Thanh toán" onPress={() => handlePay(item)} />
                             <Button title="Thanh toán qua MOMO" onPress={() => handleMomo(item)} />
                         </View>
                     </View>
@@ -134,7 +152,8 @@ const styles = StyleSheet.create({
         borderColor: '#cccccc',
         padding: 10,
         borderRadius: 7,
-    },
+      },
+
     content: {
         fontSize: 18,
     },

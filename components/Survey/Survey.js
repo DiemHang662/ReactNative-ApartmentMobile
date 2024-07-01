@@ -43,7 +43,7 @@ const Survey = () => {
         throw new Error('No token found');
       }
 
-      const response = await fetch("http://192.168.0.111:8000/api/surveyresult/", {
+      const response = await fetch("http://192.168.127.124:8000/api/surveyresult/", {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${token}`,

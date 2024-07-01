@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.0.111:8000/';
+const BASE_URL = 'http://192.168.0.112:8000/';
 
 export const endpoints = {
   residents: '/api/residents/',
